@@ -1,0 +1,82 @@
+import candle1 from "@/assets/candle-1.jpg";
+import candle2 from "@/assets/candle-2.jpg";
+import candle3 from "@/assets/candle-3.jpg";
+import candle4 from "@/assets/candle-4.jpg";
+
+export const products = [
+  {
+    id: 1,
+    image: candle1,
+    name: "شمعة الفانيليا الدافئة",
+    nameEn: "Warm Vanilla Candle",
+    description: "رائحة الفانيليا الكريمية تملأ المكان بالدفء والراحة",
+    descriptionEn: "Creamy vanilla scent fills the space with warmth and comfort",
+    price: 150,
+    originalPrice: 200,
+  },
+  {
+    id: 2,
+    image: candle2,
+    name: "شمعة الورد الرومانسي",
+    nameEn: "Romantic Rose Candle",
+    description: "عبير الورد الطبيعي لأجواء رومانسية ساحرة",
+    descriptionEn: "Natural rose fragrance for enchanting romantic vibes",
+    price: 180,
+  },
+  {
+    id: 3,
+    image: candle3,
+    name: "شمعة العنبر الفاخر",
+    nameEn: "Luxury Amber Candle",
+    description: "مزيج فاخر من العنبر والمسك لإحساس بالفخامة",
+    descriptionEn: "Luxurious blend of amber and musk for a sense of elegance",
+    price: 220,
+  },
+  {
+    id: 4,
+    image: candle4,
+    name: "شمعة اللافندر الهادئ",
+    nameEn: "Calm Lavender Candle",
+    description: "لحظات من الاسترخاء مع عطر اللافندر المهدئ",
+    descriptionEn: "Moments of relaxation with soothing lavender scent",
+    price: 160,
+    originalPrice: 190,
+  },
+  {
+    id: 5,
+    image: candle1,
+    name: "شمعة العود الشرقي",
+    nameEn: "Oriental Oud Candle",
+    description: "عبق العود الأصيل لأجواء شرقية فاخرة",
+    descriptionEn: "Authentic oud fragrance for luxurious oriental ambiance",
+    price: 250,
+  },
+  {
+    id: 6,
+    image: candle2,
+    name: "شمعة الياسمين",
+    nameEn: "Jasmine Candle",
+    description: "رائحة الياسمين العطرة لليالي هادئة",
+    descriptionEn: "Fragrant jasmine scent for peaceful nights",
+    price: 170,
+    originalPrice: 210,
+  },
+  {
+    id: 7,
+    image: candle3,
+    name: "شمعة القهوة العربية",
+    nameEn: "Arabic Coffee Candle",
+    description: "نفحات القهوة العربية الأصيلة",
+    descriptionEn: "Authentic Arabic coffee notes",
+    price: 190,
+  },
+  {
+    id: 8,
+    image: candle4,
+    name: "شمعة النعناع المنعش",
+    nameEn: "Fresh Mint Candle",
+    description: "انتعاش النعناع لأجواء صيفية منعشة",
+    descriptionEn: "Refreshing mint for cool summer vibes",
+    price: 140,
+  },
+];
