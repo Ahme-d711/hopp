@@ -2,6 +2,7 @@
 
 import axios, { AxiosInstance } from "axios";
 import { API_URL } from "@/utils/constants";
+import { getCookie } from "@/utils/cookies";
 
 const clientAxios: AxiosInstance = axios.create({
   baseURL: API_URL,
@@ -13,7 +14,7 @@ const clientAxios: AxiosInstance = axios.create({
 
 clientAxios.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = getCookie('token');
     if (token) {
       // Send token in Bearer format as expected by backend
       config.headers.Authorization = `Bearer ${token}`;

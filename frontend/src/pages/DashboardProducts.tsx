@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Edit, Trash2, Loader2, Package, DollarSign, TrendingDown, Box } from "lucide-react";
+import { Plus, Edit, Trash2, Loader2, Package, DollarSign, TrendingDown, Box, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -35,13 +35,14 @@ import {
   useUpdateProduct,
   useDeleteProduct,
 } from "@/hooks/usePorduct";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth, useLogout } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import type { CreateProductInput, UpdateProductInput, Product } from "@/services/productServices";
 
 const DashboardProducts = () => {
   const navigate = useNavigate();
   const { isAuthenticated, isAdmin, token, isLoading: isAuthLoading } = useAuth();
+  const logoutMutation = useLogout();
 
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -135,9 +136,28 @@ const DashboardProducts = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-heading font-semibold">Products Dashboard</h1>
-        <p className="text-muted-foreground mt-1">Manage your products</p>
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-heading font-semibold">Products Dashboard</h1>
+          <p className="text-muted-foreground mt-1">Manage your products</p>
+        </div>
+        <Button
+          variant="outline"
+          onClick={() => logoutMutation.mutate()}
+          disabled={logoutMutation.isPending}
+        >
+          {logoutMutation.isPending ? (
+            <>
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              Logging out...
+            </>
+          ) : (
+            <>
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
+            </>
+          )}
+        </Button>
       </div>
 
       {/* Action Buttons */}

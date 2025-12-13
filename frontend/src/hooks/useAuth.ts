@@ -7,6 +7,7 @@ import {
   type LoginInput,
   type User,
 } from "@/services/authServices";
+import { setCookie, getCookie, deleteCookie } from "@/utils/cookies";
 
 // Helper function to extract error message
 const getErrorMessage = (error: unknown, defaultMessage: string): string => {
@@ -31,9 +32,9 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: (data: LoginInput) => authServices.login(data),
     onSuccess: (response) => {
-      // Store token in localStorage
+      // Store token in cookie (expires in 1 day)
       if (response.data.token) {
-        localStorage.setItem("token", response.data.token);
+        setCookie("token", response.data.token, 1);
       }
       // Store user data in query cache
       queryClient.setQueryData<User>(authKeys.user(), response.data.user);
@@ -54,8 +55,8 @@ export const useLogout = () => {
   return useMutation({
     mutationFn: () => authServices.logout(),
     onSuccess: () => {
-      // Clear token from localStorage
-      localStorage.removeItem("token");
+      // Clear token from cookie
+      deleteCookie("token");
       // Clear user data from query cache
       queryClient.removeQueries({ queryKey: authKeys.user() });
       toast.success("Logged out successfully");
@@ -63,7 +64,7 @@ export const useLogout = () => {
     },
     onError: (error: unknown) => {
       // Even if logout fails on server, clear local state
-      localStorage.removeItem("token");
+      deleteCookie("token");
       queryClient.removeQueries({ queryKey: authKeys.user() });
       toast.error(getErrorMessage(error, "Failed to logout"));
       navigate("/");
@@ -74,7 +75,7 @@ export const useLogout = () => {
 // Hook: Get current user (fetches from API if not in cache)
 export const useAuth = () => {
   const queryClient = useQueryClient();
-  const token = localStorage.getItem("token");
+  const token = getCookie("token");
 
   // Fetch user from API if token exists but user not in cache
   const { data: userData, isLoading, error, isFetching } = useQuery({
@@ -92,7 +93,7 @@ export const useAuth = () => {
   useEffect(() => {
     if (error) {
       // If API call fails (e.g., invalid token), clear token and cache
-      localStorage.removeItem("token");
+      deleteCookie("token");
       queryClient.removeQueries({ queryKey: authKeys.user() });
     }
   }, [error, queryClient]);
