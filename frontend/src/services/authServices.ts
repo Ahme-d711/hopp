@@ -34,11 +34,24 @@ export interface LogoutResponse {
   message: string;
 }
 
+export interface GetMeResponse {
+  status: string;
+  data: {
+    user: User;
+  };
+}
+
 // Services
 export const authServices = {
   // Admin login
   login: async (data: LoginInput): Promise<LoginResponse> => {
     const response = await clientAxios.post<LoginResponse>("/auth/login", data);
+    return response.data;
+  },
+
+  // Get current user
+  getMe: async (): Promise<GetMeResponse> => {
+    const response = await clientAxios.get<GetMeResponse>("/auth/me");
     return response.data;
   },
 

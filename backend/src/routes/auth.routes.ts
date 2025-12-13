@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   register,
   adminLogin,
+  getMe,
   logout,
 } from '../controllers/auth.controller.js';
 import { loginLimiter } from '../middlewares/rate.limit.js';
@@ -22,6 +23,13 @@ router.post('/signup', register);
  * @access  Public
  */
 router.post('/login', loginLimiter, adminLogin);
+
+/**
+ * @route   GET /api/auth/me
+ * @desc    Get current user
+ * @access  Private
+ */
+router.get('/me', protect, getMe);
 
 /**
  * @route   POST /api/auth/logout

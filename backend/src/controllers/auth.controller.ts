@@ -111,6 +111,19 @@ export const adminLogin = asyncHandler(async (req: Request, res: Response, next:
 });
 
 /**
+ * Get current user (requires authentication)
+ */
+export const getMe = asyncHandler(async (req: Request, res: Response) => {
+  // User is already attached by protect middleware
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user: req.user,
+    },
+  });
+});
+
+/**
  * Logout user by clearing JWT cookie
  */
     // @ts-expect-error Too complex union

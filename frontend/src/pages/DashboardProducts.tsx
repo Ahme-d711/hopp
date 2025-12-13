@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Plus, Edit, Trash2, Loader2, Package, DollarSign, TrendingDown, Box } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -34,9 +35,14 @@ import {
   useUpdateProduct,
   useDeleteProduct,
 } from "@/hooks/usePorduct";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 import type { CreateProductInput, UpdateProductInput, Product } from "@/services/productServices";
 
 const DashboardProducts = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated, isAdmin, token, isLoading: isAuthLoading } = useAuth();
+
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -46,6 +52,42 @@ const DashboardProducts = () => {
   const createMutation = useCreateProduct();
   const updateMutation = useUpdateProduct();
   const deleteMutation = useDeleteProduct();
+
+  // Protect route: Check authentication and admin role
+  useEffect(() => {
+    // Wait for auth check to complete
+    if (isAuthLoading) {
+      return;
+    }
+
+    // Check if token exists
+    if (!token) {
+      toast.error("You must be logged in to access this page");
+      navigate("/login");
+      return;
+    }
+
+    // Check if user is authenticated and is admin
+    if (!isAuthenticated || !isAdmin) {
+      toast.error("Access denied. Admin privileges required");
+      navigate("/login");
+      return;
+    }
+  }, [isAuthenticated, isAdmin, token, navigate, isAuthLoading]);
+
+  // Show loading while checking authentication
+  if (isAuthLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  // Don't render content if not authenticated or not admin
+  if (!token || !isAuthenticated || !isAdmin) {
+    return null;
+  }
 
   const handleAddProduct = (data: FormData) => {
     createMutation.mutate(data as unknown as CreateProductInput, {
